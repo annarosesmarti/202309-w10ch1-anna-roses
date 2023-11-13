@@ -1,7 +1,4 @@
-import express from "express";
 import morgan from "morgan";
+import app from "./app.js";
 
-const port = process.env.PORT ?? 4000;
-
-const app = express();
 app.use(morgan("dev"));
