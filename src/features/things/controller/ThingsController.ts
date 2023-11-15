@@ -9,6 +9,17 @@ class ThingsController {
 
     res.status(200).json(things);
   }
+
+  public getThingsById(req: Request, res: Response) {
+    const id = +req.params.idThings;
+
+    try {
+      const thing = thingsRepository.getThingsById(id);
+      res.status(200).json(thing);
+    } catch {
+      res.status(404).json({ error: "thingId not found" });
+    }
+  }
 }
 
 export default ThingsController;
