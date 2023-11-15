@@ -1,25 +1,29 @@
 import { Router } from "express";
 import things from "../data/things.js";
+import ThingsController from "../controller/ThingsController.js";
 
 const thingsRouter = Router();
 
-thingsRouter.get("/", (_req, res) => {
-  res.status(200);
-  res.json({ things });
-});
+const thingsController = new ThingsController();
 
-thingsRouter.get("/:idTings", (req, res) => {
-  const id = +req.params.idTings;
+thingsRouter.get("/", thingsController.getThings);
 
-  const thing = things.find((thing) => thing.id === id);
+thingsRouter.get("/:idThings", thingsController.getThingsById);
 
-  if (!thing) {
-    res.status(404).json({});
+thingsRouter.delete("/:idThing", (req, res) => {
+  const id = +req.params.idThing;
+
+  const thingIndex = things.findIndex((thing) => thing.id === id);
+
+  if (thingIndex === -1) {
+    res.status(404).json({ error: "Thing not found" });
 
     return;
   }
 
-  res.status(200).json(thing);
+  things.splice(thingIndex, 1);
+
+  res.status(200).json({});
 });
 
 export default thingsRouter;
